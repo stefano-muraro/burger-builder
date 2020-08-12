@@ -48,7 +48,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_INGREDIENTS:
       return {
         ...state,
-        ingredients: action.ingredients,
+        ingredients: action.ingredients, // see video 306 to change ingredients order
         error: false
       }
     case actionTypes.FETCH_INGREDIENTS_FAILED:
