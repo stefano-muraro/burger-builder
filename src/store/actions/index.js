@@ -3,6 +3,7 @@ import BurgerBuilder from "../../containers/BurgerBuilder/BurgerBuilder";
 export {
   addIngredient,
   removeIngredient,
-  clearIngredients
+  clearIngredients,
+  initIngredients
 } from './burgerBuilder'
 export {} from './order'
