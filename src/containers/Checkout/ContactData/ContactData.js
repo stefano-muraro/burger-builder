@@ -19,12 +19,10 @@ class ContactData extends Component {
         },
         value: "",
         validation: {
-          valid: false,
-          required: true,
-          minLenght: 2,
-          maxLenght: 15,
-          touched: false
-        }
+          required: true
+        },
+        valid: false,
+        touched: false
       },
       address: {
         elementType: "input",
@@ -34,10 +32,10 @@ class ContactData extends Component {
         },
         value: "",
         validation: {
-          valid: false,
-          required: true,
-          touched: false
-        }
+          required: true
+        },
+        valid: false,
+        touched: false
       },
       zipCode:  {
         elementType: "input",
@@ -47,10 +45,12 @@ class ContactData extends Component {
         },
         value: "",
         validation: {
-          valid: false,
           required: true,
-          touched: false
-        }
+          minLength: 3,
+          maxLength: 5
+        },
+        valid: false,
+        touched: false    
       },
       country:  {
         elementType: "input",
@@ -60,10 +60,10 @@ class ContactData extends Component {
         },
         value: "",
         validation: {
-          valid: false,
-          required: true,
-          touched: false
-        }
+          required: true
+        },
+        valid: false,
+        touched: false
       },
       email:  {
         elementType: "input",
@@ -73,10 +73,10 @@ class ContactData extends Component {
         },
         value: "",
         validation: {
-          valid: false,
-          required: true,
-          touched: false
-        }
+          required: true
+        },
+        valid: false,
+        touched: false
       },
       delivery:  {
         elementType: "select",
@@ -87,11 +87,8 @@ class ContactData extends Component {
           ]
         },
         value: "normal",
-        validation: {
-          valid: true,
-          required: false,
-          touched: false
-        }
+        validation: {},
+        valid: true,
       }
     },
     formValid: false
@@ -115,12 +112,35 @@ class ContactData extends Component {
   }
 
   checkValidation(value, rules) {
-    let isValid = true
-    if(rules.required) {isValid = value.trim() !== "" && isValid}
-    if(rules.minLenght) {isValid = value.length >= rules.minLenght && isValid}
-    if(rules.maxLenght) {isValid = value.length <= rules.maxLenght && isValid}
-    return isValid
-  }
+    let isValid = true;
+    if (!rules) {
+        return true;
+    }
+    
+    if (rules.required) {
+        isValid = value.trim() !== '' && isValid;
+    }
+
+    if (rules.minLength) {
+        isValid = value.length >= rules.minLength && isValid
+    }
+
+    if (rules.maxLength) {
+        isValid = value.length <= rules.maxLength && isValid
+    }
+
+    if (rules.isEmail) {
+        const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+        isValid = pattern.test(value) && isValid
+    }
+
+    if (rules.isNumeric) {
+        const pattern = /^\d+$/;
+        isValid = pattern.test(value) && isValid
+    }
+
+    return isValid;
+}
 
   inputChangedHandler = (event, inputIdentifier) => {
     // can't access this.state.inputIdentifier.value and update the value, so we do this instead:
@@ -133,7 +153,7 @@ class ContactData extends Component {
 
     let updatedFormValid = true
     for(let inputIdentifier in updatedOrderForm) {
-      updatedFormValid = updatedOrderForm[inputIdentifier].validation.valid && updatedFormValid
+      updatedFormValid = updatedOrderForm[inputIdentifier].valid && updatedFormValid
     }
 
     this.setState({orderForm: updatedOrderForm, formValid: updatedFormValid})
@@ -157,17 +177,18 @@ class ContactData extends Component {
               elementType={formElement.config.elementType} 
               elementConfig={formElement.config.elementConfig} 
               value={formElement.config.value} 
-              valid={formElement.config.validation.valid}
-              touched={formElement.config.validation.touched}
+              valid={formElement.config.valid}
+              touched={formElement.config.touched}
               changed={(event) => this.inputChangedHandler(event, formElement.id)}
             />
           ))}
-          <Button btnType="Success" enabled={this.state.formValid}>ORDER</Button>
+          <Button btnType="Success" disabled={!this.state.formValid}>ORDER</Button>
         </form>
     )
     if (this.props.loading) {
       form = <Spinner/>
     }
+    console.log(this.state.formValid);
     return (
       <div className={classes.ContactData}>
         <h4>Your Contact Data</h4>
