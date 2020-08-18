@@ -147,15 +147,15 @@ class ContactData extends Component {
     const updatedOrderForm = {...this.state.orderForm} // shallow copy. It copies only the first layer (name, street...)
     const updatedFormElement = {...updatedOrderForm[inputIdentifier]}
     updatedFormElement.value = event.target.value
-    updatedFormElement.validation.valid = this.checkValidation(updatedFormElement.value, updatedFormElement.validation)
-    updatedFormElement.validation.touched = true
+    updatedFormElement.valid = this.checkValidation(updatedFormElement.value, updatedFormElement.validation)
+    updatedFormElement.touched = true
     updatedOrderForm[inputIdentifier] = updatedFormElement
 
     let updatedFormValid = true
     for(let inputIdentifier in updatedOrderForm) {
       updatedFormValid = updatedOrderForm[inputIdentifier].valid && updatedFormValid
     }
-
+    
     this.setState({orderForm: updatedOrderForm, formValid: updatedFormValid})
   }
 
@@ -188,7 +188,7 @@ class ContactData extends Component {
     if (this.props.loading) {
       form = <Spinner/>
     }
-    console.log(this.state.formValid);
+
     return (
       <div className={classes.ContactData}>
         <h4>Your Contact Data</h4>
