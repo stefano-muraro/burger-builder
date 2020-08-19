@@ -3,7 +3,7 @@ import React, {Component} from "react"
 import Modal from "../../components/UI/Modal/Modal"
 
 const withErrorHandler = (WrappedComponent, axios) =>  {
-  return class extends Component { // anonymous class (no name) because we are using it here only
+  return class extends Component { // anonymous class (no name) because we are using it only here
     state = {
       error:null
     }

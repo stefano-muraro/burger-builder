@@ -22,10 +22,10 @@ export const purchaseStart = () => {
   }
 }
 
-export const purchaseBurger = (orderData) => {
+export const purchaseBurger = (orderData, token) => {
   return dispatch => { // return a function where I get the dispatch function using redux-thunk middleware to then reach out to axios
     dispatch(purchaseStart()) // wrapped in a dispatch so that the action returned by purchaseStart is dispatched to the store
-    axios.post("/orders.json", orderData)
+    axios.post("/orders.json?auth=" + token, orderData)
       .then(response => {
         console.log(response.data);
         dispatch(purchaseSuccess(response.data.name, orderData))
@@ -62,10 +62,10 @@ export const fetchOrdersFail = (error) => {
   }
 }
 
-export const fetchOrders = () => {
+export const fetchOrders = (token) => {
   return dispatch => {
     dispatch(fetchOrdersStart())
-    axios.get("/orders.json")
+    axios.get("/orders.json?auth=" + token)
       .then (response => {        
         const fetchedOrders = []
         for (let key in response.data) {
