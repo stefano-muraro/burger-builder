@@ -4,7 +4,8 @@ import {updateObject} from '../utility'
 const initialState = {
   ingredients: null, // fetching from Firebase
   totalPrice: 4,
-  error: false
+  error: false,
+  building: false
 }
 
 const INGREDIENT_PRICES = {
@@ -19,7 +20,8 @@ const addIngredient = (state, action) => {
   const updatedIngredients1 = updateObject(state.ingredients, updatedIngredient1)
   const updatedState1 = {
     ingredients: updatedIngredients1,
-    totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingName]
+    totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingName],
+    building: true
   }
   return updateObject(state, updatedState1)
 } 
@@ -43,7 +45,7 @@ const clearIngredient = (state, action) => {
   }
   const updatedState3 = {
     ingredients: updatedIngredients3,
-    totalPrice: 4
+    totalPrice: 4,
   }
   return updateObject(state, updatedState3)
 }
@@ -51,7 +53,8 @@ const clearIngredient = (state, action) => {
 const setIngredients = (state, action) => {
   const updatedState4 = {
     ingredients: action.ingredients,
-    error: false
+    error: false,
+    building: false
   }
   return updateObject(state, updatedState4)
 }
