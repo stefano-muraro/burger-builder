@@ -5,6 +5,7 @@ import classes from './Auth.module.css'
 import {connect} from 'react-redux'
 import * as actions from '../../store/actions/index'
 import Spinner from '../../components/UI/Spinner/Spinner'
+import {Redirect} from 'react-router-dom'
 
 class Auth extends Component {
   state = {
@@ -96,10 +97,6 @@ class Auth extends Component {
     })
   }
 
-  logoutHandler = () => {
-    this.props.onLogout()
-  }
-
   render() {
     const formElementArray = []
     for (let key in this.state.controls) {
@@ -123,13 +120,13 @@ class Auth extends Component {
 
     return (
       <div className={classes.Auth}>
+        {this.props.isAuthenticated? <Redirect to='/'/> : null}
         {this.props.error? this.props.error.message : null}
         <form onSubmit={this.submitHandler}>
           {this.props.loading? <Spinner/> : form}
           <Button btnType='Success'>Submit</Button> 
         </form>
         <Button btnType='Danger' clicked={this.switchAuthModeHandler}>Switch to {this.state.isSignup? 'Sign In' : 'Sign Up'}</Button>
-        {this.props.token? <Button btnType='Danger' clicked={this.logoutHandler}>Logout</Button> : null}
       </div>
     )
   }
@@ -144,9 +141,9 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
-    token: state.auth.token,
+    isAuthenticated: state.auth.token !== null,
     error: state.auth.error,
-    loading: state.auth.loading
+    loading: state.auth.loading,
   }
 }
 

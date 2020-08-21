@@ -17,12 +17,12 @@ class BurgerBuilder extends Component {
   }
 
   componentWillMount() {
-    this.props.clearIngs()
+    this.props.onClearIngredients()
   }
 
-  componentDidMount () {
+  componentDidMount() {
     console.log(this.props);
-    this.props.initIngs()
+    this.props.onInitIngredients()
   }
 
   updatePurchaseState(ingredients) {
@@ -31,7 +31,11 @@ class BurgerBuilder extends Component {
   }
 
   purchaseOnHandler = () => {
-    this.setState({purchasing: true})
+    if(this.props.isAuthenticated) { 
+      this.setState({purchasing: true})
+    } else {
+      this.props.history.push('/auth') // from react-router
+    }
   }
 
   purchaseOffHandler = () => {
@@ -58,14 +62,15 @@ class BurgerBuilder extends Component {
         <>
           <Burger ingredients={this.props.ings}/>
           <BuildControls
-            ingredientAdded={this.props.addIng}
-            ingredientRemoved={this.props.removeIng}
+            ingredientAdded={this.props.onAddIngredients}
+            ingredientRemoved={this.props.onRemoveIngredients}
             disabled={disabledInfo}
             price={this.props.price}
             purchasable={this.updatePurchaseState(this.props.ings)}
             ordered={this.purchaseOnHandler}
             ingredients={this.props.ings}
-            clear={this.props.clearIngs}/>
+            clear={this.props.onClearIngredients}
+            isAuth={this.props.isAuthenticated}/>
         </>
       )
       orderSummary = 
@@ -73,7 +78,7 @@ class BurgerBuilder extends Component {
           ingredients={this.props.ings} 
           price={this.props.price} 
           cancel={this.purchaseOffHandler} 
-          continue={this. purchaseContinueHandler}/>
+          continue={this.purchaseContinueHandler}/>
     }
 
     return (
@@ -91,16 +96,17 @@ const mapStateToProps = state => {
   return {
     ings: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
-    error: state.burgerBuilder.error
+    error: state.burgerBuilder.error,
+    isAuthenticated: state.auth.token !== null
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    addIng: (ing) => dispatch(actions.addIngredient(ing)),
-    removeIng: (ing) => dispatch(actions.removeIngredient(ing)),
-    clearIngs: () => dispatch(actions.clearIngredients()),
-    initIngs: () => dispatch(actions.initIngredients()),
+    onAddIngredients: (ing) => dispatch(actions.addIngredient(ing)),
+    onRemoveIngredients: (ing) => dispatch(actions.removeIngredient(ing)),
+    onClearIngredients: () => dispatch(actions.clearIngredients()),
+    onInitIngredients: () => dispatch(actions.initIngredients()),
     onInitPurchase: () => dispatch(actions.purchaseInit())
   }  
 }  
