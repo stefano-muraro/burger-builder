@@ -27,7 +27,6 @@ export const purchaseBurger = (orderData, token) => {
     dispatch(purchaseStart()) // wrapped in a dispatch so that the action returned by purchaseStart is dispatched to the store
     axios.post("/orders.json?auth=" + token, orderData)
       .then(response => {
-        console.log(response.data);
         dispatch(purchaseSuccess(response.data.name, orderData))
       })
       .catch(error => {

@@ -5,12 +5,8 @@ import Backdrop from "../Backdrop/Backdrop"
 class Modal extends Component { // Se utiliza class para poner usar los lifecycle methods.
   // No actualiza si Modal está oculto. Mejora performance.
   // Esto afecta también al componente OrderSummary porque es hijo.
-  shouldComponentUpdate(nextProps, nextState){
+  shouldComponentUpdate(nextProps, nextState) {
     return nextProps.show !== this.props.show || this.props.show
-  }
-
-  componentWillUpdate(){
-    console.log("[Modal] WillUpdate")
   }
 
   render() {
