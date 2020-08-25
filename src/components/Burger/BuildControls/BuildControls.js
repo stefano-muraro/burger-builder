@@ -11,7 +11,7 @@ const controls = [
 
 const buildControls = (props) => (
   <div className={classes.BuildControls}>
-    <p style={{width: "140px"}}>Total price: <strong>{props.price === 4 ? "--" : "$" + props.price.toFixed(2)}</strong></p>
+    <p style={{width: "140px"}}>Total price: <strong>${props.price === 4 ? "0.00" : props.price.toFixed(2)}</strong></p>
     <button 
       className={classes.Clear} 
       disabled={!props.purchasable}
