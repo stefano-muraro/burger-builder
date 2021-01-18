@@ -5,7 +5,8 @@
   overflow: scroll;
   text-align: center;
   font-weight: bold;
-  fonr-size: 1.2rem;
+  font-size: 1.2rem;
+  overflow: hidden;
 }
 
 @media (min-width: 500px) and (min-height: 400px) {
